@@ -18,7 +18,11 @@
 
 </head>
 
-<style></style>
+<style>
+  .no-decoration {
+        text-decoration: none;
+    }
+</style>
 
 <body>
     <?php require "navbar.php"; ?>
@@ -34,6 +38,7 @@
                 </li>
             </ol>
      </nav>
+
         <div class="my-5 col-6 md-6">
           <h3>Tambah Kategori</h3>
 
@@ -51,7 +56,7 @@
             if(isset($_POST['simpan_kategori'])){
               $kategori = htmlspecialchars($_POST['kategori']);
 
-              $queryExist = mysqli_query($con, "select nama from kategori where nama='$kategori'");
+              $queryExist = mysqli_query($con, "SELECT nama from kategori where nama='$kategori'");
               $jumlahDataKategoriBaru = mysqli_num_rows($queryExist);
 
               if($jumlahDataKategoriBaru > 0){
@@ -62,10 +67,10 @@
                 <?php
               }
               else{
-                  $querySimpan = mysqli_query($con, "insert into kategori (nama) values ('$kategori')");
+                  $querySimpan = mysqli_query($con, "INSERT into kategori (nama) values ('$kategori')");
                   if($querySimpan){
                     ?>
-                    <div class="alert alert-primary mt-3" role="alert">
+                    <div class="alert alert-success mt-3" role="alert">
                       Kategori berhasil tersimpan!
                     </div>
 
@@ -83,7 +88,7 @@
 
         </div>
 
-        <div class"mt-3">
+        <div class="mt-3">
           <h2>List Kategori</h2>
 
          <div class="table-responsive mt-5">
@@ -100,7 +105,7 @@
                   if($jumlahKategori==0){
               ?>
                   <tr>
-                    <td colspan=3 class="text-center">Data kategori tidak tersedia</td>                 
+                    <td colspan="3" class="text-center">Data kategori tidak tersedia</td>                 
                   </tr>
               <?php
                   }
