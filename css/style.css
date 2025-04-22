@@ -20,6 +20,48 @@
 }
 
 .highlighted-kategori {
-    border: solid;
     height: 250px;
+}
+
+.kategori-makanan {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/Nasi-Kuning.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.kategori-sambal {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/sambal.jpg');
+    background-size: cover;
+    background-position: center;
+
+}
+
+.kategori-minuman {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/minuman.jpeg');
+    background-size: cover;
+    background-position: center;
+
+}
+
+.kategori-dessert {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/snack.jpeg');
+    background-size: cover;
+    background-position: center;
+
+}
+
+.kategori-makanan-anak {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/makanan anak.jpeg');
+    background-size: cover;
+    background-position: center;
+
+}
+
+.no-decoration {
+    text-decoration: none;
+    color: white;
+}
+
+.no-decoration:hover {
+    color: #FFFECE;
 }

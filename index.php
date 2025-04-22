@@ -34,9 +34,31 @@
   <div class="container-fluid py-5">
     <div class="container text-center">
       <h5>Kategori Terlaris</h5>   
-         <div class="row mt-4">
+         <div class="row mt-5">
             <div class="col-4">
-              <div class="highlighted-kategori"></div>
+              <div class="highlighted-kategori kategori-makanan d-flex justify-content-center align-items-center">
+                <h5 class="text-white"><a class="no-decoration" href="produk.php?kategori=Makanan">Makanan</a></h5>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="highlighted-kategori kategori-sambal  d-flex justify-content-center align-items-center">
+                <h5 class="text-white"><a class="no-decoration" href="produk.php?kategori=Sambal">Sambal</a></h5>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="highlighted-kategori kategori-minuman  d-flex justify-content-center align-items-center">
+                <h5 class="text-white"><a class="no-decoration" href="produk.php?kategori=Minuman">Minuman</a></h5>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="mt-4 highlighted-kategori kategori-dessert  d-flex justify-content-center align-items-center">
+                <h5 class="text-white"><a class="no-decoration" href="produk.php?kategori=Dessert">Dessert</a></h5>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="mt-4 highlighted-kategori kategori-makanan-anak  d-flex justify-content-center align-items-center">
+                <h5 class="text-white"><a class="no-decoration" href="produk.php?kategori=Makanan Anak">Makanan Anak</a></h5>
+              </div>
             </div>
          </div>   
     </div>
