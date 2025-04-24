@@ -64,7 +64,55 @@
     </div>
   </div>
 
+<!--tentang kami-->
+<div class="container-fluid warna4 py-5">
+  <div class="container text-center">
+     <h3>Tentang kami</h3>
+    <p class="mt-3">
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed, quibusdam tenetur. Quas impedit quo, inventore voluptatem maiores totam neque magni. Eius deserunt a nulla ab et temporibus eveniet libero pariatur.
+    </p>
+  </div>
+</div>
 
+<!--produk-->
+<div class="container-fluid py-5">
+  <div class="container text-center">
+      <h3>Produk</h3>
+
+      <div class="row mt-5">
+          <div class="col-md-4">
+              <div class="card" style="width: 18rem;">
+              <img src="image/Nasi-Kuning.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+              </div>   
+          </div>
+          <div class="col-md-4">
+              <div class="card" style="width: 18rem;">
+              <img src="image/Nasi-Kuning.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+              </div>   
+          </div>
+          <div class="col-md-4">
+              <div class="card" style="width: 18rem;">
+              <img src="image/Nasi-Kuning.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+              </div>   
+          </div>
+      </div>
+  </div>
+</div>
 
   <script src="bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\js\bootstrap.bundle.min.js"></script>
   <script src="fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\js\all.min.js"></script>
