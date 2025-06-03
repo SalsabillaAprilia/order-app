@@ -1,9 +1,9 @@
 .warna1 {
-    background-color:bisque;
+    background-color:rgb(107, 96, 66);
 }
 
 .warna2 {
-    background-color: #E69DB8;
+    background-color: #c99374;
 }
 
 .warna3 {
@@ -11,7 +11,7 @@
 }
 
 .warna4 {
-    background-color: #FFFECE;
+    background-color: #d8bd65;
 }
 
 
@@ -25,7 +25,7 @@
 }
 
 .kategori-makanan {
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/image/uduk.jpg');
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/uduk.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -53,9 +53,13 @@
     color: #FFD0C7;
 }
 
+.nav-link {
+    color: azure;
+}
+
 .text-harga{
     font-size: 20px;
-    color: green;
+    color: rgb(4, 121, 82);
 }
 
 .image-box {
@@ -73,11 +77,20 @@
     background-color: rgba(0,0,0,0.7);
 }
 
-.banner-produk {
-    height: 30vh;
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/IQxgCK2eHWWXB1Vn23En.jpg');
+.content-subscribe a {
+    color: #fff;
 }
 
-.list-group a {
-    text-decoration: none;
+.banner2 {
+    height: 45vh;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/bg.jpg');
+    background-position: 50% 35%;
 }
+
+.produk-terkait-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+

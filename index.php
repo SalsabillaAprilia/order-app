@@ -3,7 +3,7 @@
     $queryProduk = mysqli_query($con, "SELECT id,nama,foto,harga,detail FROM produk LIMIT 6")
 ?>
 
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -37,7 +37,7 @@
   <!-- hightlighted kategori -->
   <div class="container-fluid py-5">
     <div class="container text-center">
-      <h5>Kategori Terlaris</h5>   
+      <h4>Kategori Terlaris</h4>   
          <div class="row mt-5">
             <div class="col-4">
               <div class="highlighted-kategori kategori-makanan d-flex justify-content-center align-items-center">
@@ -58,20 +58,20 @@
     </div>
   </div>
 
-<!--tentang kami-->
+<!--tentang kami
 <div class="container-fluid warna1 py-5">
-  <div class="container text-center">
+  <div class="container text-center" style="color: azure;">
      <h3>Tentang kami</h3>
     <p class="mt-3">
       Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed, quibusdam tenetur. Quas impedit quo, inventore voluptatem maiores totam neque magni. Eius deserunt a nulla ab et temporibus eveniet libero pariatur.
     </p>
   </div>
-</div>
+</div> -->
 
 <!--produk-->
 <div class="container-fluid py-5">
   <div class="container text-center">
-      <h3>Produk</h3>
+      <h4>Produk</h4>
 
       <div class="row mt-5">
         <?php while ($data = mysqli_fetch_array($queryProduk)) { ?>
@@ -80,16 +80,16 @@
                  <div class="image-box">
                     <img src="image/<?php echo $data['foto']; ?>" class="card-img-top" alt="...">
                  </div>
-              <div class="card-body">
-                <h5 class="card-title"><?php echo $data['nama'];?></h5>
-                <p class="card-text text-harga">Rp<?php echo $data['harga']; ?></p>
-                <a href="produk-detail.php?nama=p<?php echo $data['nama']; ?>" class="btn warna4 text-white">Lihat Detail</a>
-              </div>
+                <div class="card-body">
+                  <h5 class="card-title"><?php echo $data['nama'];?></h5>
+                  <p class="card-text text-harga">Rp<?php echo $data['harga']; ?></p>
+                  <a href="produk-detail.php?id=<?php echo $data['id']; ?>" class="btn warna1 text-white">Lihat Detail</a>
+                </div>
               </div>   
           </div>
         <?php } ?>
       </div>
-      <a class="btn btn-outline-warning mt-3 p-3 fs-3" href="produk.php">See More</a>
+      <a class="btn btn-outline-warning mt-3 p-2 fs-5" href="produk.php">See More</a>
   </div>
 </div>
 
