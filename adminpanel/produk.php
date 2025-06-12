@@ -5,7 +5,48 @@
     $query = mysqli_query($con, "SELECT a.*, b.nama AS nama_kategori FROM produk a JOIN kategori b ON a.kategori_id=b.id");
     $jumlahProduk = mysqli_num_rows($query);
 
-    $queryKategori = mysqli_query($con, "SELECT * FROM kategori");
+// Query kategori
+$queryKategori = mysqli_query($con, "SELECT * FROM kategori");
+
+// Ambil keyword jika ada
+$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+
+// Query produk (kondisional)
+if (isset($_GET['keyword'])) {
+    $queryProduk = mysqli_query($con, "
+        SELECT produk.*, kategori.nama AS nama_kategori 
+        FROM produk 
+        JOIN kategori ON produk.kategori_id = kategori.id
+        WHERE produk.nama LIKE '%$keyword%'
+    ");
+} else if (isset($_GET['kategori']) && !empty($_GET['kategori'])) {
+    $kategoriNama = $_GET['kategori'];
+    $queryGetKategoriId = mysqli_query($con, "SELECT id FROM kategori WHERE nama = '$kategoriNama'");
+
+    if ($kategoriId = mysqli_fetch_array($queryGetKategoriId)) {
+        $queryProduk = mysqli_query($con, "
+            SELECT produk.*, kategori.nama AS nama_kategori 
+            FROM produk 
+            JOIN kategori ON produk.kategori_id = kategori.id
+            WHERE produk.kategori_id = '$kategoriId[id]'
+        ");
+    } else {
+        $queryProduk = mysqli_query($con, "
+            SELECT produk.*, kategori.nama AS nama_kategori 
+            FROM produk 
+            JOIN kategori ON produk.kategori_id = kategori.id
+        ");
+    }
+} else {
+    $queryProduk = mysqli_query($con, "
+        SELECT produk.*, kategori.nama AS nama_kategori 
+        FROM produk 
+        JOIN kategori ON produk.kategori_id = kategori.id
+    ");
+}
+
+$countData = mysqli_num_rows($queryProduk);
+
 
     function generateRandomString($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -39,6 +80,24 @@
     }
 </style>
 
+<script>
+    // Cegah kembali ke halaman ini lewat tombol back
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
+    window.onunload = function () {
+        // do nothing
+    }
+
+    // Paksa reload dari server kalau user klik back
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            window.location.reload();
+        }
+    });
+</script>
+
 <body>
     <?php require "navbar.php"; ?>
 
@@ -55,6 +114,62 @@
             </ol>
         </nav>
 
+        <div class="mt-3 mb-3 d-flex align-items-center gap-3">
+            <h2 class="mb-0">List Produk</h2>
+            <form method="GET" class="d-flex" style="width: 300px;">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Cari produk..." name="keyword" value="<?php echo isset($_GET['keyword']) ? $_GET['keyword'] : ''; ?>">
+                    <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+
+        </div>
+
+          <div class="table-responsive mt-5">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Nama</th>
+                        <th>Kategori</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        if($countData==0){
+                    ?>
+                        <tr>
+                            <td colspan=6 class="text-center">Data produk tidak tersedia</td>                 
+                        </tr>
+                    <?php
+                        }
+                        else{
+                            $jumlah = 1;
+                            while ($data = mysqli_fetch_assoc($queryProduk)) {
+
+                    ?>
+                            <tr>
+                                <td><?php echo $jumlah; ?></td>
+                                <td><?php echo $data['nama']; ?></td>
+                                <td><?php echo $data['nama_kategori']; ?></td>
+                                <td><?php echo $data['harga']; ?></td>
+                                <td><?php echo $data['ketersediaan_stok']; ?></td>
+                                <td>
+                                    <a href="produk-detail.php?p=<?php echo $data['id']; ?>" class="btn btn-info"><i class="fas fa-edit"></i></a>
+                                </td>
+                            </tr>
+                    <?php
+                            $jumlah++;
+                            }
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+
         <!-- tambah produk -->
         <div class="my-5 col-6 md-6">
             <h3>Tambah Produk</h3>
@@ -69,7 +184,7 @@
                     <select name="kategori" id="kategori" class="form-control" required>
                         <option value="">Pilih Satu</option>
                         <?php
-                            while($data=mysqli_fetch_array($queryKategori)){
+                            while($data=mysqli_fetch_assoc($queryKategori)){
                         ?>
                             <option value="<?php echo $data['id']; ?>"><?php echo $data['nama']; ?></option>
                         <?php
@@ -166,53 +281,6 @@
                     }
                 }
             ?>
-        </div>
-
-        <div class="mt-3 mb-5">
-          <h2>List Produk</h2>
-
-          <div class="table-responsive mt-5">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Nama</th>
-                        <th>Kategori</th>
-                        <th>Harga</th>
-                        <th>Ketersediaan Stok</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                        if($jumlahProduk==0){
-                    ?>
-                        <tr>
-                            <td colspan=6 class="text-center">Data produk tidak tersedia</td>                 
-                        </tr>
-                    <?php
-                        }
-                        else{
-                            $jumlah = 1;
-                            while($data=mysqli_fetch_array($query)){
-                    ?>
-                            <tr>
-                                <td><?php echo $jumlah; ?></td>
-                                <td><?php echo $data['nama']; ?></td>
-                                <td><?php echo $data['nama_kategori']; ?></td>
-                                <td><?php echo $data['harga']; ?></td>
-                                <td><?php echo $data['ketersediaan_stok']; ?></td>
-                                <td>
-                                    <a href="produk-detail.php?p=<?php echo $data['id']; ?>" class="btn btn-info"><i class="fas fa-search"></i></a>
-                                </td>
-                            </tr>
-                    <?php
-                            $jumlah++;
-                            }
-                        }
-                    ?>
-                </tbody>
-            </table>
         </div>
     </div>
 

@@ -24,9 +24,29 @@
     }
 </style>
 
+<script>
+    // Cegah kembali ke halaman ini lewat tombol back
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
+    window.onunload = function () {
+        // do nothing
+    }
+
+    // Paksa reload dari server kalau user klik back
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            window.location.reload();
+        }
+    });
+</script>
+
 <body>
     <?php require "navbar.php"; ?>
+
     <div class="container mt-5">
+
     <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active" aria-current="page">
@@ -39,6 +59,46 @@
             </ol>
      </nav>
 
+        <div class="mt-3">
+          <h2>List Kategori</h2>
+          <div class="table-responsive mt-5">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Nama</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                    if($jumlahKategori==0){
+                ?>
+                    <tr>
+                      <td colspan="3" class="text-center">Data kategori tidak tersedia</td>                 
+                    </tr>
+                <?php
+                    }
+                    else{
+                      $jumlah = 1;
+                      while($data=mysqli_fetch_array($queryKategori)){
+                ?>
+                    <tr>
+                      <td><?php echo $jumlah; ?></td>
+                      <td><?php echo $data['nama']; ?></td>
+                      <td>
+                        <a href="kategori-detail.php?p=<?php echo $data['id']; ?>" class="btn btn-info"><i class="fas fa-edit"></i></a>
+                      </td>
+                    </tr>
+                <?php
+                      $jumlah++;
+                      }
+                    }
+                ?>
+              </tbody>
+            </table>
+          </div>  
+        </div>
         <div class="my-5 col-6 md-6">
           <h3>Tambah Kategori</h3>
 
@@ -85,49 +145,6 @@
 
             }
           ?>
-
-        </div>
-
-        <div class="mt-3">
-          <h2>List Kategori</h2>
-
-         <div class="table-responsive mt-5">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Nama</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-                  if($jumlahKategori==0){
-              ?>
-                  <tr>
-                    <td colspan="3" class="text-center">Data kategori tidak tersedia</td>                 
-                  </tr>
-              <?php
-                  }
-                  else{
-                    $jumlah = 1;
-                    while($data=mysqli_fetch_array($queryKategori)){
-              ?>
-                  <tr>
-                    <td><?php echo $jumlah; ?></td>
-                    <td><?php echo $data['nama']; ?></td>
-                    <td>
-                      <a href="kategori-detail.php?p=<?php echo $data['id']; ?>" class="btn btn-info"><i class="fas fa-search"></i></a>
-                    </td>
-                  </tr>
-              <?php
-                    $jumlah++;
-                    }
-                  }
-              ?>
-            </tbody>
-          </table>
-        </div>  
         </div>
     </div>
 

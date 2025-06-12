@@ -17,6 +17,25 @@
     <link rel="stylesheet" href="..\bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\css\bootstrap.min.css">
 
 </head>
+
+<script>
+    // Cegah kembali ke halaman ini lewat tombol back
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
+    window.onunload = function () {
+        // do nothing
+    }
+
+    // Paksa reload dari server kalau user klik back
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            window.location.reload();
+        }
+    });
+</script>
+
 <body>
   <?php require "navbar.php"; ?>
 

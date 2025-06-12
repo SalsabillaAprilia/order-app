@@ -1,6 +1,7 @@
 <?php
-    session_start();
-    session_unset();
-    session_destroy();
-    header('location: login.php');
+session_start();          // WAJIB ada di paling atas
+session_unset();          // Hapus semua variabel session
+session_destroy();        // Hancurkan session
+header("Location: login.php"); // Redirect ke login
+exit;                     // Pastikan skrip berhenti
 ?>
