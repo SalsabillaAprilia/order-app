@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'koneksi.php';
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];

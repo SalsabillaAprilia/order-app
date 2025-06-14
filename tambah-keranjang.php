@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "koneksi.php"; // pastikan ini sesuai dengan path koneksi kamu
+require "koneksi.php"; // koneksi
 
 // Ambil ID produk dari POST
 if (isset($_POST['produk_id'])) {

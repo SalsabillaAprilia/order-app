@@ -108,43 +108,7 @@
 </div>
 
 <!--footer-->
-<?php require "footer.php"; ?>
-  
-<script>
-//Ambil nilai totalItem dari localStorage saat halaman dimuat
-window.addEventListener('pageshow', function () {
-    const savedTotal = localStorage.getItem('totalItem');
-    if (savedTotal !== null) {
-      const badge = document.getElementById('badge-cart');
-      if (badge) badge.innerText = savedTotal;
-    }
-  });
-
-document.querySelectorAll('.form-tambah-keranjang').forEach(form => {
-  form.addEventListener('submit', function(e) {
-    e.preventDefault(); // biar gak reload
-
-    const produkId = this.dataset.id;
-
-    fetch('tambah-keranjang.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: 'produk_id=' + produkId
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === 'success') {
-        // Update badge jumlah item
-        document.getElementById('badge-cart').innerText = data.totalItem;
-        // Simpan ke localStorage supaya halaman lain bisa akses
-        localStorage.setItem('totalItem', data.totalItem);
-      }
-    });
-  });
-});
-</script>
-
+  <?php require "footer.php"; ?>
+  <script src="script.js"></script>
 </body>
 </html>
