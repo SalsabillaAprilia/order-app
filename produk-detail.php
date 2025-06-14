@@ -37,14 +37,18 @@
                         Rp <?php echo $produk['harga']; ?>
                     </p>
                     <p class="fs-5">Status Ketersediaan : <strong> <?php echo $produk['ketersediaan_stok']; ?> </strong></p>
-                    <p><i class="fa-solid fa-cart-plus"></i></p>
+                    <form class="form-tambah-keranjang d-inline" data-id="<?php echo $produk['id']; ?>">
+                      <button type="submit" style="background: none; border: none; padding: 0;">
+                        <i class="fa-solid fa-cart-plus fs-4"></i>
+                      </button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>  
     
     <!-- produk terkait -->
-     <div class="container-fluid py-5 bg-dark">
+   <div class="container-fluid py-5 bg-dark">
         <div class="container">
             <h2 class="text-center text-white mb-5">Produk Terkait</h2>
 
@@ -65,5 +69,43 @@
 
     <script src="bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\js\bootstrap.bundle.min.js"></script>
     <script src="fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\js\all.min.js"></script>
+    
+    <script>
+    //Ambil nilai totalItem dari localStorage saat halaman dimuat
+    window.addEventListener('pageshow', function () {
+        const savedTotal = localStorage.getItem('totalItem');
+        if (savedTotal !== null) {
+        const badge = document.getElementById('badge-cart');
+        if (badge) badge.innerText = savedTotal;
+        }
+    });
+
+    document.querySelectorAll('.form-tambah-keranjang').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // biar gak reload
+
+        const produkId = this.dataset.id;
+
+        fetch('tambah-keranjang.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'produk_id=' + produkId
+        })
+        .then(res => res.json())
+        .then(data => {
+        if (data.status === 'success') {
+            // Update badge jumlah item
+            document.getElementById('badge-cart').innerText = data.totalItem;
+            // Simpan ke localStorage supaya halaman lain bisa akses
+            localStorage.setItem('totalItem', data.totalItem);
+        }
+        });
+    });
+    });
+    </script>
+
+
 </body>
 </html>

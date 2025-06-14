@@ -1,4 +1,14 @@
-<nav class="navbar navbar-expand-lg warna1">
+<?php
+session_start();
+$totalItem = 0;
+if (isset($_SESSION['keranjang'])) {
+    foreach ($_SESSION['keranjang'] as $qty) {
+        $totalItem += $qty;
+    }
+}
+?>
+
+<nav class="navbar navbar-expand-lg warna1 sticky-top">
   <div class="container">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
      <span class="navbar-toggler-icon"></span>
@@ -17,10 +27,16 @@
           </li>
         </ul>
       </div>
-      <div class="pt-2">
-        <p><i class="fa-solid fa-cart-shopping" style="color: white;"></i></p>
+
+      <div class="d-flex align-items-center">
+        <a href="keranjang.php" class="btn position-relative">
+          <i class="fa-solid fa-cart-shopping fa-lg" style="color: white;"></i>
+          <!-- Bisa tambahin badge jumlah item di sini -->
+          <span id="badge-cart" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            <?= $totalItem ?>
+          </span>
+        </a>
       </div>
-    </div>
-    
+    </div>   
   </div>
 </nav>

@@ -55,47 +55,57 @@ else if(isset($_GET['kategori']) && !empty($_GET['kategori'])) {
 
   <!--body-->
     <div class="container py-5">
-    <div class="row">
-        <div class="col-lg-3 mb-5" >
-                <h3>Kategori</h3>
-            <ul class="list-group"> 
-                <?php while($kategori = mysqli_fetch_array($queryKategori)){ ?>
-                <a class="no-decoration" href="produk.php?kategori=<?php echo $kategori['nama']; ?>">   
-                    <li class="list-group-item"><?php echo $kategori['nama']; ?></li>
-                </a> 
-                <?php } ?>
-            </ul>
-        </div>
-        <div class="col-lg-9" >
-          <h3 class="text-center mb-3">Produk</h3>
-          <div class="row">
-                <?php 
-                  if($countData == 0){
-                ?>
-                  <h4 class="text-center my-5">Produk yang anda cari tidak tersedia</h4>
-                <?php
-                  }
-                ?>
+      <div class="row">
+          <!-- filter by kategori -->
+          <div class="col-lg-3 mb-5" >
+                  <h3>Kategori</h3>
+              <ul class="list-group"> 
+                  <?php while($kategori = mysqli_fetch_array($queryKategori)){ ?>
+                  <a class="no-decoration" href="produk.php?kategori=<?php echo $kategori['nama']; ?>">   
+                      <li class="list-group-item"><?php echo $kategori['nama']; ?></li>
+                  </a> 
+                  <?php } ?>
+              </ul>
+          </div>
+          <!-- daftar produk -->
+          <div class="col-lg-9" >
+            <h3 class="text-center mb-3">Produk</h3>
+            <div class="row">
+                  <?php 
+                    if($countData == 0){
+                  ?>
+                    <h4 class="text-center my-5">Produk yang anda cari tidak tersedia</h4>
+                  <?php
+                    }
+                  ?>
 
-            <?php while($produk = mysqli_fetch_array($queryProduk)){ ?>
-                    <div class="col-md-4">
-                      <div class="card h-100">
-                    <div class="image-box">
-                        <img src="image/<?php echo $produk['foto']; ?>" class="card-img-top" alt="...">
-                    </div>
-                    <div class="card-body">
-                      <h5 class="card-title"><?php echo $produk['nama']; ?></h5>
-                      <p class="card-text text-truncate"><?php echo $produk['detail']; ?></p>
-                      <p class="card-text text-harga">Rp<?php echo $produk['harga']; ?></p>
-                      <a href="produk-detail.php?id=<?php echo $produk['id']; ?>" class="btn warna1 text-white">Lihat Detail</a>
-                    </div>
-                  </div>   
-                </div>
-                <?php } ?>
-            </div>
-        </div>
+              <?php while($produk = mysqli_fetch_array($queryProduk)){ ?>
+                      <!-- card produk -->
+                      <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                          <div class="image-box">
+                              <img src="image/<?php echo $produk['foto']; ?>" class="card-img-top" alt="...">
+                          </div>
+                          <div class="card-body">
+                            <h5 class="card-title"><?php echo $produk['nama']; ?></h5>
+                            <p class="card-text text-truncate"><?php echo $produk['detail']; ?></p>
+                            <p class="card-text text-harga">Rp<?php echo $produk['harga']; ?></p>
+                            <div class="d-flex justify-content-between">
+                              <a href="produk-detail.php?id=<?php echo $produk['id']; ?>" class="btn warna1 text-white">Lihat Detail</a>
+                              <form class="form-tambah-keranjang d-inline" data-id="<?php echo $produk['id']; ?>">
+                                <button type="submit" style="background: none; border: none; padding: 0;">
+                                  <i class="fa-solid fa-cart-plus fs-4"></i>
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+                    </div>   
+                  </div>
+                  <?php } ?>
 
-    </div>
+              </div>
+          </div>  
+      </div>
     </div>
 
 
@@ -104,6 +114,41 @@ else if(isset($_GET['kategori']) && !empty($_GET['kategori'])) {
 
     <script src="bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\js\bootstrap.bundle.min.js"></script>
     <script src="fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\js\all.min.js"></script>
+    
+    <script>
+    //Ambil nilai totalItem dari localStorage saat halaman dimuat
+    window.addEventListener('pageshow', function () {
+    const savedTotal = localStorage.getItem('totalItem');
+    if (savedTotal !== null) {
+      const badge = document.getElementById('badge-cart');
+      if (badge) badge.innerText = savedTotal;
+    }
+  });
 
+    document.querySelectorAll('.form-tambah-keranjang').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault(); // biar gak reload
+
+        const produkId = this.dataset.id;
+
+        fetch('tambah-keranjang.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: 'produk_id=' + produkId
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // Update badge jumlah item
+            document.getElementById('badge-cart').innerText = data.totalItem;
+            // Simpan ke localStorage supaya halaman lain bisa akses
+            localStorage.setItem('totalItem', data.totalItem);
+          }
+        });
+      });
+    });
+    </script>
 </body>
 </html>

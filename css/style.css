@@ -14,10 +14,16 @@
     background-color: #d8bd65;
 }
 
+.text-warna1 {
+  color: rgb(107, 96, 66);
+}
 
 .banner {
     height: 80vh;
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/bg.jpg');
+    background: url('../image/begron.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .highlighted-kategori {
@@ -83,8 +89,9 @@
 
 .banner2 {
     height: 45vh;
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/bg.jpg');
-    background-position: 50% 35%;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../image/begron.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .produk-terkait-image {
@@ -92,5 +99,14 @@
     width: 100%;
     object-fit: cover;
     object-position: center;
+    display: block;
+}
+
+.btn-cart-plus {
+  transition: transform 0.2s ease;
+}
+
+.btn-cart-plus.clicked {
+  transform: scale(1.3);
 }
 
