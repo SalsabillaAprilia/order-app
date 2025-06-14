@@ -68,6 +68,7 @@ $countData = mysqli_num_rows($queryProduk);
     <title>Produk</title>
     <link rel="stylesheet" href="..\bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\css\bootstrap.min.css">
     <link rel="stylesheet" href="..\fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\css\fontawesome.min.css">
+    <link rel="stylesheet" href="..\css\style.css">
 </head>
 
 <style>

@@ -109,6 +109,9 @@
 
 <!--footer-->
   <?php require "footer.php"; ?>
-  <script src="script.js"></script>
+
+    <script src="bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\js\bootstrap.bundle.min.js"></script>
+    <script src="fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\js\all.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

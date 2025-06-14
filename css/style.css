@@ -59,8 +59,8 @@
     color: #FFD0C7;
 }
 
-.nav-link {
-    color: azure;
+.navbar-dark .navbar-nav .nav-link {
+    color: azure !important;
 }
 
 .text-harga{

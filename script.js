@@ -109,5 +109,3 @@ document.querySelectorAll('.form-hapus-produk').forEach(form => {
   });
 });
 
-// Jalankan sinkronisasi badge saat halaman dibuka
-document.addEventListener('DOMContentLoaded', syncBadgeCart);
