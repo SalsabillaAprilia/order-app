@@ -37,7 +37,7 @@ else if(isset($_GET['kategori']) && !empty($_GET['kategori'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toko Online/Produk</title>
+    <title>Toko Online | Produk</title>
     <link rel="stylesheet" href="bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\css\bootstrap.min.css">
     <link rel="stylesheet" href="fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\css\all.min.css">
     <link rel="stylesheet" href="css/style.css">

@@ -2,6 +2,7 @@
 session_start();
 require "koneksi.php";
 $total = 0;
+$isKeranjangKosong = empty($_SESSION['keranjang']);
 ?>
 
 <!DOCTYPE html>
@@ -10,10 +11,10 @@ $total = 0;
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toko Online | Home</title>
+  <title>Toko Online | Keranjang Belanja</title>
   <link rel="stylesheet" href="bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\css\bootstrap.min.css">
   <link rel="stylesheet" href="fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\css\all.min.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css\style.css">
 </head>
   <style>
     .main{
@@ -88,12 +89,19 @@ $total = 0;
             </tr>
         </tfoot>
     </table>
-    <div class="d-flex justify-content-end mt-3 mb-5">
-        <a href="checkout.php" class="btn warna1 text-white px-5 fs-5" style="min-width: 180px;">Checkout</a>
+    <div class="d-flex justify-content-end mt-3 mb-5">        
+        <button 
+            class="btn warna1 text-white px-5 fs-5" 
+            style="min-width: 180px;" 
+            id="btnCheckout" 
+            data-kosong="<?= $isKeranjangKosong ? '1' : '0' ?>">
+            Checkout
+        </button>
     </div>
 
 </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=<?= time() ?>"></script>
+
 </body>
 </html> 
