@@ -34,11 +34,11 @@
                         <?php echo $produk['detail']; ?>
                     </p>
                     <p class="text-harga">
-                        Rp <?php echo $produk['harga']; ?>
+                        Rp<?= number_format($produk['harga'], 0, ',', '.') ?>
                     </p>
                     <p class="fs-5">Status Ketersediaan : <strong> <?php echo $produk['ketersediaan_stok']; ?> </strong></p>
                     <form class="form-tambah-keranjang d-inline" data-id="<?php echo $produk['id']; ?>">
-                      <button type="submit" style="background: none; border: none; padding: 0;">
+                      <button type="submit" class="btn-cart-submit">
                         <i class="fa-solid fa-cart-plus fs-4"></i>
                       </button>
                     </form>

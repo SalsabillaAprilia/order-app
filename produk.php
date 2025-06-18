@@ -89,11 +89,11 @@ else if(isset($_GET['kategori']) && !empty($_GET['kategori'])) {
                           <div class="card-body">
                             <h5 class="card-title"><?php echo $produk['nama']; ?></h5>
                             <p class="card-text text-truncate"><?php echo $produk['detail']; ?></p>
-                            <p class="card-text text-harga">Rp<?php echo $produk['harga']; ?></p>
+                            <p class="card-text text-harga">Rp<?= number_format($produk['harga'], 0, ',', '.') ?></p>
                             <div class="d-flex justify-content-between">
                               <a href="produk-detail.php?id=<?php echo $produk['id']; ?>" class="btn warna1 text-white">Lihat Detail</a>
                               <form class="form-tambah-keranjang d-inline" data-id="<?php echo $produk['id']; ?>">
-                                <button type="submit" style="background: none; border: none; padding: 0;">
+                                <button type="submit" class="btn-cart-submit">
                                   <i class="fa-solid fa-cart-plus fs-4"></i>
                                 </button>
                               </form>

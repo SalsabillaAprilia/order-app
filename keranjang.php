@@ -61,7 +61,7 @@ $isKeranjangKosong = empty($_SESSION['keranjang']);
                 ?>
                 <tr>
                     <td><?= $produk['nama'] ?></td>
-                    <td class="text-center">Rp<?= number_format($produk['harga']) ?></td>
+                    <td class="text-center">Rp<?= number_format($produk['harga'], 0, ',', '.') ?></td>
                     <td class="text-center">
                         <form class="form-update-kuantitas d-inline" data-id="<?= $produk_id ?>">
                             <button type="button" class="btn btn-sm btn-warning btn-kuantitas" data-action="kurang">-</button>
@@ -69,7 +69,7 @@ $isKeranjangKosong = empty($_SESSION['keranjang']);
                             <button type="button" class="btn btn-sm btn-success btn-kuantitas" data-action="tambah">+</button>
                         </form>
                     </td>
-                    <td class="text-center">Rp<span id="subtotal-<?= $produk_id ?>"><?= number_format($subtotal) ?></span></td>
+                    <td class="text-center">Rp<span id="subtotal-<?= $produk_id ?>"><?= number_format($subtotal, 0, ',', '.') ?></span></td>
                     <td class="text-center">
                         <form class="form-hapus-produk d-inline" data-id="<?= $produk_id ?>">
                           <button type="button" class="btn btn-sm btn-danger">Hapus</button>
@@ -85,7 +85,7 @@ $isKeranjangKosong = empty($_SESSION['keranjang']);
         <tfoot>
             <tr>
                 <td colspan="3"><strong>Total</strong></td>
-                <td colspan="2"><strong id="total-harga">Rp<?= number_format($total) ?></strong></td>
+                <td colspan="2"><strong id="total-harga">Rp<?= number_format($total, 0, ',', '.') ?></strong></td>
             </tr>
         </tfoot>
     </table>

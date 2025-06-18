@@ -8,6 +8,17 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+  // navlink
+  const navLinks = document.querySelectorAll('.nav-link-click');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', function (e) {
+      // Untuk menandai link aktif secara visual (bukan navigasi)
+      navLinks.forEach(l => l.classList.remove('clicked'));
+      this.classList.add('clicked');
+    });
+  });  
+
   // Fitur Tambah ke Keranjang
   document.querySelectorAll('.form-tambah-keranjang').forEach(form => {
     form.addEventListener('submit', function(e) {
@@ -29,6 +40,13 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById('badge-cart').innerText = data.totalItem;
           // Simpan ke localStorage supaya halaman lain bisa akses
           localStorage.setItem('totalItem', data.totalItem);
+          //Tambahkan efek klik icon cart
+          const tombol = this.querySelector('.btn-cart-submit');
+          tombol.classList.add('clicked');
+
+          setTimeout(() => {
+            tombol.classList.remove('clicked');
+          }, 300);
         }
       });
     });
@@ -129,17 +147,54 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // popup keranjang kosong
-      const btnCheckout = document.getElementById('btnCheckout');
-      if (btnCheckout) {
-          btnCheckout.addEventListener('click', function () {
-              const keranjangKosong = this.dataset.kosong === "1";
-              if (keranjangKosong) {
-                  alert("Keranjang kosong!");
-              } else {
-                  window.location.href = "checkout.php";
-              }
-          });
+  const btnCheckout = document.getElementById('btnCheckout');
+  if (btnCheckout) {
+    btnCheckout.addEventListener('click', function () {
+      const keranjangKosong = this.dataset.kosong === "1";
+      if (keranjangKosong) {
+        alert("Keranjang kosong!");
+      } else {
+        window.location.href = "checkout.php";
+        }
+      });
+    }    
+
+  // hitung ongkir
+  const ongkirKelurahan = {
+    "Cibadak": 3000,
+    "Kedung Badak": 4000,
+    "Kedung Waringin": 5000,
+    "Kayumanis": 6000,
+    "Kencana": 6000,
+    "Kedung Jaya": 7000,
+    "Mekarwangi": 7000,
+    "Semplak": 7000,
+    "Tanah Sareal": 6000
+  };
+
+  const kelurahanSelect = document.getElementById("kelurahan");
+  const ongkirDisplay = document.getElementById("ongkirDisplay");
+  const ongkirInput = document.getElementById("ongkirInput");
+  const totalAkhirEl = document.getElementById("totalAkhir");
+
+  const ringkasan = document.getElementById("ringkasanPesanan");
+  const totalBelanja = ringkasan ? parseInt(ringkasan.dataset.total) : 0;
+
+
+  if (kelurahanSelect) {
+    kelurahanSelect.addEventListener("change", function () {
+      const kelurahan = this.value;
+      const ongkir = ongkirKelurahan[kelurahan] || 0;
+
+      if (ongkirDisplay) ongkirDisplay.innerText = `Rp${ongkir.toLocaleString("id-ID")}`;
+      if (ongkirInput) ongkirInput.value = ongkir;
+
+      if (totalAkhirEl) {
+        const totalAkhir = totalBelanja + ongkir;
+        totalAkhirEl.innerText = `Rp${totalAkhir.toLocaleString("id-ID")}`;
       }
+    });
+  }
 });
 
 
