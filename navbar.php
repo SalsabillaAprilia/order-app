@@ -32,7 +32,7 @@ $page = basename($_SERVER['PHP_SELF']);
       <!-- Keranjang -->
       <div class="d-flex align-items-center">
         <a href="keranjang.php" class="btn position-relative">
-          <i class="fa-solid fa-cart-shopping fa-lg" style="color: white;"></i>
+          <i class="fa-solid fa-cart-shopping fa-lg cart-icon" style="color: white;"></i>
           <!-- Bisa tambahin badge jumlah item di sini -->
           <span id="badge-cart" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
             <?= $totalItem ?>

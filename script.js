@@ -17,7 +17,16 @@ document.addEventListener("DOMContentLoaded", function () {
       navLinks.forEach(l => l.classList.remove('clicked'));
       this.classList.add('clicked');
     });
-  });  
+  }); 
+  
+  document.querySelectorAll('.cart-icon').forEach(icon => {
+    icon.addEventListener('click', function () {
+      icon.classList.add('clicked');
+      setTimeout(() => {
+        icon.classList.remove('clicked');
+      }, 150); // 150ms efek mengecil lalu balik normal
+    });
+  });
 
   // Fitur Tambah ke Keranjang
   document.querySelectorAll('.form-tambah-keranjang').forEach(form => {

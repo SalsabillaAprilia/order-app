@@ -50,7 +50,7 @@ if (!empty($_SESSION['keranjang'])) {
             <label for="whatsapp" class="form-label">Nomor Whatsapp<span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="08xxxxxxxx" required>
           </div>
-          <p class="mb-3 fw-bold">Alamat Penerima:</p>
+          <p class="mb-3">Alamat Penerima:</p>
 
           <div class="mb-3">
             <label for="kota" class="form-label">Kota</label>

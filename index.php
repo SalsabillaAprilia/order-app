@@ -103,7 +103,7 @@
           </div>
         <?php } ?>
       </div>
-      <a class="btn btn-outline-warning mt-3 p-2 fs-5" href="produk.php">See More</a>
+      <a class="btn btn-outline-warna1 btn-sm px-3 py-2 fs-5" href="produk.php">See More</a>
   </div>
 </div>
 

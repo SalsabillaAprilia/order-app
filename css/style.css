@@ -56,7 +56,7 @@
 }
 
 .no-decoration:hover {
-    color: #FFD0C7;
+    color: rgb(130, 200, 195);
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -77,6 +77,27 @@
   font-weight: bold;
 }
 
+.cart-icon {
+  transition: transform 0.2s ease;
+}
+
+.cart-icon:hover {
+  transform: scale(1.2);
+}
+
+.cart-icon:active {
+  transform: scale(0.9);
+}
+
+.cart-icon:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+a[href="keranjang.php"]:focus {
+  outline: none;
+  box-shadow: none;
+}
 
 .text-harga{
     font-size: 20px;
@@ -123,11 +144,34 @@
   padding: 4px;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
+}
+
+.btn-cart-submit:hover {
+  transform: scale(1.2);
 }
 
 .btn-cart-submit.clicked {
-  color: rgb(203, 189, 162);
+  transform: scale(0.9);
+}
+
+.btn.warna1:hover {
+  background-color: rgb(63, 54, 32); /* warna lebih gelap dari warna1 */
+  color: white; /* tetap putih saat hover */
+  transition: background-color 0.3s ease;
+}
+
+.btn-outline-warna1 {
+  color: rgb(236, 200, 99);
+  border: 2px solid rgb(236, 200, 99);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-warna1:hover {
+  background-color: rgb(63, 54, 32);
+  border: 2px solid rgb(63, 54, 32);
+  color: white;
 }
 
 
