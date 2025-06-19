@@ -102,6 +102,7 @@ $isKeranjangKosong = empty($_SESSION['keranjang']);
 </div>
 
   <script src="script.js?v=<?= time() ?>"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 </html> 

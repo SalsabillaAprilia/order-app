@@ -41,7 +41,7 @@ if (!empty($_SESSION['keranjang'])) {
     <div class="row">
       <div class="col-md-6">
         <h5 class="mb-4 fw-bold" style="text-align: center;">Harap mengisi data berikut!</h5>
-        <form id="formCheckout" action="proses-checkout.php" method="POST">
+        <form id="formCheckout" method="POST">
           <div class="mb-3">
             <label for="nama" class="form-label">Nama<span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="nama" name="nama" placeholder="Tulis Nama" required>
@@ -84,10 +84,15 @@ if (!empty($_SESSION['keranjang'])) {
           <div class="mb-5">
             <label for="metode" class="form-label">Metode Pembayaran<span class="text-danger">*</span></label>
             <select class="form-select" id="metode" name="metode" required>
-              <option value="" disabled selected>Pilih Metode</option>
-              <option value="Bank BCA">Bank BCA</option>
-              <option value="Bank BRI">Bank BRI</option>
-              <option value="COD">COD</option>
+              <option value="" disabled selected>Pilih Metode Pembayaran</option>
+              <option value="qris">QRIS</option>
+              <option value="dana">DANA</option>
+              <option value="gopay">GoPay</option>
+              <option value="ovo">OVO</option>
+              <option value="shopee">ShopeePay</option>
+              <option value="bca_va">BCA Virtual Account</option>
+              <option value="bri_va">BSI Virtual Account</option>
+              <option value="bni_va">Mandiri Virtual Account</option>
             </select>
           </div>
         </form>
@@ -121,7 +126,7 @@ if (!empty($_SESSION['keranjang'])) {
               <span id="totalAkhir">Rp<?= number_format($total_akhir, 0, ',', '.') ?></span>
             </div>
           </div>
-          <button type="submit" form="formCheckout" class="btn warna1 text-white mt-4 w-100 fs-5 mb-5" id="btnBayar">Bayar</button>
+          <button type="submit" class="btn warna1 text-white mt-4 w-100 fs-5 mb-5" id="btnBayar">Bayar</button>
         <?php endif; ?>
       </div>
 
@@ -130,5 +135,6 @@ if (!empty($_SESSION['keranjang'])) {
   </div>
 
   <script src="script.js?v=<?= time() ?>"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

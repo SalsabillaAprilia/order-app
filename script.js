@@ -161,12 +161,17 @@ document.addEventListener("DOMContentLoaded", function () {
     btnCheckout.addEventListener('click', function () {
       const keranjangKosong = this.dataset.kosong === "1";
       if (keranjangKosong) {
-        alert("Keranjang kosong!");
+        Swal.fire({
+          icon: 'warning',
+          title: 'Keranjang Kosong!',
+          text: 'Silakan tambahkan produk terlebih dahulu.',
+          confirmButtonColor: '#6b6042'
+        });
       } else {
         window.location.href = "checkout.php";
-        }
-      });
-    }    
+      }
+    });
+  }
 
   // hitung ongkir
   const ongkirKelurahan = {
@@ -204,7 +209,55 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // cek stok sebelum bayar
+const btnBayar = document.getElementById('btnBayar');
+const form = document.getElementById('formCheckout');
+
+if (btnBayar && form) {
+    btnBayar.addEventListener('click', function (e) {
+      e.preventDefault(); //stop submit form biasa
+
+      if (!form.checkValidity()) {
+        form.reportValidity(); //biar required-nya jalan
+        return;
+      }
+
+      const formData = new FormData(form);
+
+      fetch('proses-checkout.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(res => {
+        if (res.includes("Stok tidak mencukupi")) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Maaf 😔',
+            text: res,
+            confirmButtonText: 'Kembali ke Keranjang',
+          }).then(() => {
+            window.location.href = "keranjang.php";
+          });
+        } else if (res.includes("Gagal menyimpan")) {
+          Swal.fire("Error", "Gagal menyimpan pesanan.", "error");
+        } else {
+          // kalau sukses redirect manual
+          window.location.href = "pembayaran.php";
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        Swal.fire("Oops!", "Terjadi kesalahan!", "error");
+      });
+    });
+  }
+  
+
+
 });
+
 
 
 
