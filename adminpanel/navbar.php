@@ -6,16 +6,29 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item me-4">
-          <a class="nav-link" href="../adminpanel">Home</a>
+          <a class="nav-link" href="../adminpanel">
+            <i class="fa-solid fa-house"></i> Home
+          </a>
         </li>
         <li class="nav-item me-4">
-          <a class="nav-link" href="kategori.php">Kategori</a>
+          <a class="nav-link" href="kategori.php">
+            <i class="fa-solid fa-list"></i> Kategori
+          </a>
         </li>
         <li class="nav-item me-4">
-          <a class="nav-link" href="produk.php">Produk</a>
+          <a class="nav-link" href="produk.php">
+            <i class="fa-solid fa-box"></i> Produk
+          </a>
         </li>
         <li class="nav-item me-4">
-          <a class="nav-link" href="logout.php">Logout</a>
+          <a class="nav-link" href="pertanyaan.php">
+            <i class="fa-solid fa-key"></i> Keamanan
+          </a>
+        </li>
+        <li class="nav-item me-4">
+          <a class="nav-link" href="logout.php">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </a>
         </li>
       </ul>
     </div>
