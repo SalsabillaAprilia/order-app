@@ -3,7 +3,7 @@ session_start();
 require 'koneksi.php'; // pastikan koneksi ke database
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  // 1. Validasi input
+  // 1. Ambil input
   $nama = $_POST['nama'] ?? '';
   $whatsapp = $_POST['whatsapp'] ?? '';
   $kelurahan = $_POST['kelurahan'] ?? '';
@@ -11,10 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $kecamatan = $_POST['kecamatan'] ?? '';
   $jalan = $_POST['jalan'] ?? '';
   $alamat = "$jalan, Kelurahan $kelurahan, Kecamatan $kecamatan, $kota.";
-  $metode = $_POST['metode'] ?? '';
+  $metode_pembayaran = $_POST['metode'] ?? '';
   $ongkir = $_POST['ongkir'] ?? 0;
 
-  if (empty($nama) || empty($whatsapp) || empty($alamat) || empty($metode)) {
+  if (empty($nama) || empty($whatsapp) || empty($alamat) || empty($metode_pembayaran)) {
     header("Location: checkout.php?error=field_kosong");
     exit;
   }
@@ -51,33 +51,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
   // Kalau ada produk yang stoknya kurang
   if (!empty($produk_stok_kurang)) {
-  $nama_produk = implode(', ', $produk_stok_kurang);
-  die("Stok tidak mencukupi untuk produk: $nama_produk");
+  die("Produk yang kamu pesan habis saat proses pembayaran.");
 }
 
-  $total_bayar = $total + $ongkir;
-
-  // 3. Kurangi stok produk
-  foreach ($produk_dipesan as $p) {
-    $idProduk = $p['id'];
-    $qty = $p['qty'];
-    mysqli_query($con, "UPDATE produk SET stok = stok - $qty WHERE id = '$idProduk'");
-  }
+ $total_harga = $total + $ongkir;
+ $produk_json = json_encode($produk_dipesan);
+ $tanggal = date('Y-m-d H:i:s');
+ $status = 'pending';
 
   // 4. Simpan ke database
-  $produk_json = json_encode($produk_dipesan);
-  $created = date('Y-m-d H:i:s');
-  $status = 'pending';
-
-  $simpan = mysqli_query($con, "INSERT INTO pesanan (nama, whatsapp, alamat, kelurahan, metode, ongkir, produk, total, status, created_at)
-                                VALUES ('$nama', '$whatsapp', '$alamat', '$kelurahan', '$metode', '$ongkir', '$produk_json', '$total_bayar', '$status', '$created')");
+  $simpan = mysqli_query($con, "INSERT INTO pesanan 
+    (nama, whatsapp, alamat, metode_pembayaran, produk, total_harga, status, tanggal) 
+    VALUES 
+    ('$nama', '$whatsapp', '$alamat', '$metode_pembayaran', '$produk_json', '$total_harga', '$status', '$tanggal')");
 
   if ($simpan) {
     unset($_SESSION['keranjang']);
     header('Location: pembayaran.php');
     exit;
   } else {
-    die('Gagal menyimpan pesanan.');
+    die('Gagal menyimpan pesanan: ' . mysqli_error($con));
   }
 } else {
   die('Akses tidak valid.');

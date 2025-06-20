@@ -1,12 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
-  //Ambil nilai totalItem dari localStorage saat halaman dimuat
-  window.addEventListener('pageshow', function () {
-      const savedTotal = localStorage.getItem('totalItem');
+  //Reload halaman dari server kalau user balik pakai tombol Back
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+      if (window.location.pathname.includes('keranjang.php')) {
+        window.location.reload();
+      }
+    }
+
+    //Ambil nilai totalItem dari localStorage saat halaman dimuat
+    const savedTotal = localStorage.getItem('totalItem');
       if (savedTotal !== null) {
         const badge = document.getElementById('badge-cart');
         if (badge) badge.innerText = savedTotal;
       }
-    });
+  });
 
   // navlink
   const navLinks = document.querySelectorAll('.nav-link-click');
@@ -223,6 +230,11 @@ if (btnBayar && form) {
         return;
       }
 
+      // Ambil nilai ongkir dari kelurahan terpilih
+      const kelurahan = kelurahanSelect.value;
+      const ongkir = ongkirKelurahan[kelurahan] || 0;
+      ongkirInput.value = ongkir;
+
       const formData = new FormData(form);
 
       fetch('proses-checkout.php', {
@@ -231,12 +243,13 @@ if (btnBayar && form) {
       })
       .then(response => response.text())
       .then(res => {
-        if (res.includes("Stok tidak mencukupi")) {
+        if (res.includes("Produk yang kamu pesan habis saat proses pembayaran")) {
           Swal.fire({
             icon: 'warning',
             title: 'Maaf 😔',
             text: res,
             confirmButtonText: 'Kembali ke Keranjang',
+            confirmButtonColor: '#6b6042'
           }).then(() => {
             window.location.href = "keranjang.php";
           });
@@ -244,6 +257,7 @@ if (btnBayar && form) {
           Swal.fire("Error", "Gagal menyimpan pesanan.", "error");
         } else {
           // kalau sukses redirect manual
+          localStorage.removeItem('totalItem');
           window.location.href = "pembayaran.php";
         }
       })

@@ -77,6 +77,7 @@ if (!empty($_SESSION['keranjang'])) {
               <option value="Tanah Sareal">Tanah Sareal</option>
             </select>
           </div>
+          <input type="hidden" name="ongkir" id="ongkirInput">
           <div class="mb-3">
             <label for="jalan" class="form-label">Nama Jalan, Gedung, No.Rumah<span class="text-danger">*</span></label>
             <textarea class="form-control" id="jalan" name="jalan" rows="3" placeholder="Jalan... Rt/Rw" required></textarea>
@@ -97,7 +98,7 @@ if (!empty($_SESSION['keranjang'])) {
           </div>
         </form>
       </div>
-
+      
       <div class="col-md-6">
         <h5 class="mb-4 fw-bold" style="text-align: center;">Pesanan kamu!</h5>
         <div id="ringkasanPesanan" data-total="<?= $total ?>">
@@ -119,7 +120,6 @@ if (!empty($_SESSION['keranjang'])) {
             <div class="d-flex justify-content-between">
               <label class="form-label">Ongkos Kirim</label>
               <div><span id="ongkirDisplay">Rp0</span></div>
-              <input type="hidden" name="ongkir" id="ongkirInput">
             </div>
             <div class="d-flex justify-content-between fw-bold border-top pt-2 mt-2">
               <span>Total Akhir:</span>
