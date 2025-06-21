@@ -18,6 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $metode     = $_POST['metode'] ?? '';
   $ongkir     = intval($_POST['ongkir'] ?? 0);
 
+  $_SESSION['whatsapp'] = $whatsapp;
+  setcookie('whatsapp', $whatsapp, time() + (86400 * 30), "/");
+
   if (!$nama || !$whatsapp || !$jalan || !$kelurahan || !$metode) {
     http_response_code(400);
     echo "Data tidak lengkap";
@@ -71,7 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       'name' => 'Ongkos Kirim'
     ];
   }
-
+  
+  date_default_timezone_set('Asia/Jakarta');
   $total_harga = $total + $ongkir;
   $produk_json = json_encode($item_details);
   $tanggal     = date('Y-m-d H:i:s');
@@ -104,12 +108,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'address' => $alamat
       ]
     ],
-    'enabled_payments' => [$metode]
+    'enabled_payments' => [$metode],
+    'callbacks' => [
+    'finish' => 'http://localhost/toko_online/pembayaran.php'  // Ganti sesuai URL-mu
+  ]
   ];
 
   try {
     $snapToken = \Midtrans\Snap::getSnapToken($transaction);
     echo $snapToken;
+    unset($_SESSION['keranjang']);
   } catch (Exception $e) {
     // Hapus data dari DB jika token gagal dibuat
     mysqli_query($con, "DELETE FROM pesanan WHERE order_id = '$order_id'");
@@ -118,3 +126,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
   }
 }
+
+
+

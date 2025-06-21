@@ -39,7 +39,7 @@ $isKeranjangKosong = empty($_SESSION['keranjang']);
 
 <div class="container mt-5">
     <table class="table table-bordered">
-        <thead>
+        <thead class="table-light">
             <tr>
                 <th>Nama Produk</th>
                 <th class="text-center">Harga</th>

@@ -19,10 +19,13 @@ $page = basename($_SERVER['PHP_SELF']);
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item me-4">
-            <a class="nav-link <?= $page == 'index.php' ? 'active' : '' ?>" href="index.php">Home</a>
+            <a class="nav-link <?= $page == 'index.php' ? 'active' : '' ?>" href="index.php">Beranda</a>
           </li>
           <li class="nav-item me-4">
             <a class="nav-link <?= $page == 'produk.php' ? 'active' : '' ?>" href="produk.php">Produk</a>
+          </li>
+          <li class="nav-item me-4">
+            <a class="nav-link <?= $page == 'pesanan-saya.php' ? 'active' : '' ?>" href="pesanan-saya.php">Pesanan</a>
           </li>
           <li class="nav-item me-4">
             <a class="nav-link <?= $page == 'tentang-kami.php' ? 'active' : '' ?>" href="tentang-kami.php">Tentang Kami</a>

@@ -267,7 +267,20 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
   
+  // Simpan ke localStorage jika ada di body (halaman pembayaran)
+  const whatsapp = document.body.dataset.whatsapp;
+  if (whatsapp) {
+    localStorage.setItem('whatsapp', whatsapp);
+  }
 
+  // Ambil dari localStorage ke cookie jika cookie belum ada (halaman riwayat)
+  const cookieHasWhatsapp = document.cookie.split(';').some(cookie => cookie.trim().startsWith('whatsapp='));
+  const localWhatsapp = localStorage.getItem('whatsapp');
+
+  if (!cookieHasWhatsapp && localWhatsapp) {
+    document.cookie = "whatsapp=" + localWhatsapp + "; path=/";
+    location.reload();
+  }
 
 });
 
