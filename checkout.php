@@ -88,12 +88,9 @@ if (!empty($_SESSION['keranjang'])) {
               <option value="" disabled selected>Pilih Metode Pembayaran</option>
               <option value="qris">QRIS</option>
               <option value="dana">DANA</option>
-              <option value="gopay">GoPay</option>
-              <option value="ovo">OVO</option>
+              <option value="gopay">GoPay</option>          
               <option value="shopee">ShopeePay</option>
-              <option value="bca_va">BCA Virtual Account</option>
-              <option value="bri_va">BSI Virtual Account</option>
-              <option value="bni_va">Mandiri Virtual Account</option>
+              <option value="bri_va">BSI Virtual Account</option>             
             </select>
           </div>
         </form>
@@ -136,5 +133,6 @@ if (!empty($_SESSION['keranjang'])) {
 
   <script src="script.js?v=<?= time() ?>"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-OIxLm29MMVMBROj1"></script>
 </body>
 </html>

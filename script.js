@@ -218,54 +218,53 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // cek stok sebelum bayar
-const btnBayar = document.getElementById('btnBayar');
-const form = document.getElementById('formCheckout');
+  const btnBayar = document.getElementById('btnBayar');
+  const form = document.getElementById('formCheckout');
 
-if (btnBayar && form) {
-    btnBayar.addEventListener('click', function (e) {
-      e.preventDefault(); //stop submit form biasa
+  if (btnBayar && form) {
+      btnBayar.addEventListener('click', function (e) {
+        e.preventDefault();
 
-      if (!form.checkValidity()) {
-        form.reportValidity(); //biar required-nya jalan
-        return;
-      }
-
-      // Ambil nilai ongkir dari kelurahan terpilih
-      const kelurahan = kelurahanSelect.value;
-      const ongkir = ongkirKelurahan[kelurahan] || 0;
-      ongkirInput.value = ongkir;
-
-      const formData = new FormData(form);
-
-      fetch('proses-checkout.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.text())
-      .then(res => {
-        if (res.includes("Produk yang kamu pesan habis saat proses pembayaran")) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Maaf 😔',
-            text: res,
-            confirmButtonText: 'Kembali ke Keranjang',
-            confirmButtonColor: '#6b6042'
-          }).then(() => {
-            window.location.href = "keranjang.php";
-          });
-        } else if (res.includes("Gagal menyimpan")) {
-          Swal.fire("Error", "Gagal menyimpan pesanan.", "error");
-        } else {
-          // kalau sukses redirect manual
-          localStorage.removeItem('totalItem');
-          window.location.href = "pembayaran.php";
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
         }
-      })
-      .catch(err => {
-        console.error(err);
-        Swal.fire("Oops!", "Terjadi kesalahan!", "error");
+        
+        const kelurahan = kelurahanSelect.value;
+        const ongkir = ongkirKelurahan[kelurahan] || 0;
+        if (ongkirInput) ongkirInput.value = ongkir;
+
+        const formData = new FormData(form);
+
+        fetch('get-snap-token.php', {
+          method: 'POST',
+          body: formData
+        })
+          .then(res => res.text())
+          .then(snapToken => {
+            if (snapToken.includes("habis")) {
+              Swal.fire("Maaf 😓", snapToken, "warning");
+              return;
+            }
+            snap.pay(snapToken, {
+              onSuccess: function(result) {
+                console.log('SUKSES:', result);
+                window.location.href = 'pembayaran.php'; // redirect ke halaman pembayaran
+              },
+              onPending: function(result) {
+                console.log('PENDING:', result);
+                window.location.href = 'pembayaran.php';
+              },
+              onError: function(result) {
+                console.log('ERROR:', result);
+                Swal.fire("Error", "Pembayaran gagal 😢", "error");
+              },
+              onClose: function() {
+                Swal.fire("Dibatalkan", "Kamu menutup pop-up pembayaran.", "info");
+              }
+            });
+          });
       });
-    });
   }
   
 
