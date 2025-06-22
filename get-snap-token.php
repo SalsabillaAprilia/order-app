@@ -79,14 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $total_harga = $total + $ongkir;
   $produk_json = json_encode($item_details);
   $tanggal     = date('Y-m-d H:i:s');
-  $status      = 'pending';
+  $status_pembayaran = 'pending';
+  $status_pesanan = 'menunggu';
   $order_id    = 'WNB-' . time();
 
   // Simpan ke database
   $simpan = mysqli_query($con, "INSERT INTO pesanan 
-    (order_id, nama, whatsapp, alamat, metode_pembayaran, produk, total_harga, status, tanggal) 
-    VALUES 
-    ('$order_id', '$nama', '$whatsapp', '$alamat', '$metode', '$produk_json', '$total_harga', '$status', '$tanggal')");
+  (order_id, nama, whatsapp, alamat, metode_pembayaran, produk, total_harga, status_pembayaran, status_pesanan, tanggal)
+  VALUES 
+  ('$order_id', '$nama', '$whatsapp', '$alamat', '$metode', '$produk_json', '$total_harga', '$status_pembayaran', '$status_pesanan', '$tanggal')");
 
   if (!$simpan) {
     http_response_code(500);
@@ -116,6 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   try {
     $snapToken = \Midtrans\Snap::getSnapToken($transaction);
+    mysqli_query($con, "UPDATE pesanan SET snap_token = '$snapToken' WHERE order_id = '$order_id'");
     echo $snapToken;
     unset($_SESSION['keranjang']);
   } catch (Exception $e) {

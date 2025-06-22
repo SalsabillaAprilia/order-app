@@ -36,7 +36,7 @@
                     <p class="text-harga">
                         Rp<?= number_format($produk['harga'], 0, ',', '.') ?>
                     </p>
-                    <p class="fs-5">Status Ketersediaan : <strong> <?php echo $produk['stok']; ?> </strong></p>
+                    <p class="fs-5">Stok : <strong> <?php echo $produk['stok']; ?> </strong></p>
                     <form class="form-tambah-keranjang d-inline" data-id="<?php echo $produk['id']; ?>">
                       <button type="submit" class="btn-cart-submit">
                         <i class="fa-solid fa-cart-plus fs-4"></i>

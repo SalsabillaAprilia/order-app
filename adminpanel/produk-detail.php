@@ -97,9 +97,9 @@
                     </textarea>
                 </div>
                 <div>
-                    <label for="ketersediaan_stok">Ketersediaan Stok</label>
-                    <select name="ketersediaan_stok" id="ketersediaan_stok" class="form-control">
-                        <option value="<?php echo $data['ketersediaan_stok']; ?>"><?php echo $data['ketersediaan_stok']; ?></option>
+                    <label for="stok">Stok</label>
+                    <select name="stok" id="stok" class="form-control">
+                        <option value="<?php echo $data['stok']; ?>"><?php echo $data['stok']; ?></option>
                         
                         <?php 
                             if($data['ketersediaan_stok']=='Tersedia'){

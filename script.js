@@ -273,6 +273,11 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem('whatsapp', whatsapp);
   }
 
+  // Reset jumlah item keranjang kalau ini halaman pembayaran
+  if (window.location.pathname.includes('pembayaran.php')) {
+    localStorage.setItem('totalItem', 0);
+  }
+
   // Ambil dari localStorage ke cookie jika cookie belum ada (halaman riwayat)
   const cookieHasWhatsapp = document.cookie.split(';').some(cookie => cookie.trim().startsWith('whatsapp='));
   const localWhatsapp = localStorage.getItem('whatsapp');

@@ -28,7 +28,26 @@ if (!isset($_SESSION['verified_security'])) {
         <meta charset="UTF-8">
         <title>Verifikasi Ulang</title>
         <link rel="stylesheet" href="..\bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\css\bootstrap.min.css">
+        <link rel="stylesheet" href="..\fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\css\fontawesome.min.css">
+        <link rel="stylesheet" href="..\css\style.css">
     </head>
+    <script>
+    // Cegah kembali ke halaman ini lewat tombol back
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
+    window.onunload = function () {
+        // do nothing
+    }
+
+    // Paksa reload dari server kalau user klik back
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            window.location.reload();
+        }
+    });
+</script>
     <body>
     <?php require "navbar.php"; ?>
     <div class="container mt-5">

@@ -8,7 +8,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item me-4">
           <a class="nav-link" href="../adminpanel">
-            <i class="fa-solid fa-house"></i> Home
+            <i class="fa-solid fa-house"></i> Beranda
           </a>
         </li>
         <li class="nav-item me-4">

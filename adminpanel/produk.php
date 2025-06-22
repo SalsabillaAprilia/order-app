@@ -60,13 +60,29 @@ function generateRandomString($length = 10) {
 <head>
     <meta charset="UTF-8">
     <title>Produk</title>
-    <link rel="stylesheet" href="../bootstrap/bootstrap-5.0.2-dist/bootstrap-5.0.2-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../fontawesome/fontawesome-free-6.7.2-web/fontawesome-free-6.7.2-web/css/all.min.css">
-    <style>
-        .no-decoration { text-decoration: none; }
-        form div { margin-bottom: 10px; }
+    <link rel="stylesheet" href="..\bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\css\bootstrap.min.css">
+    <link rel="stylesheet" href="..\fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\css\fontawesome.min.css">
+    <link rel="stylesheet" href="..\css\style.css">
+     
     </style>
 </head>
+<script>
+    // Cegah kembali ke halaman ini lewat tombol back
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
+    window.onunload = function () {
+        // do nothing
+    }
+
+    // Paksa reload dari server kalau user klik back
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            window.location.reload();
+        }
+    });
+</script>
 <body>
 <?php require "navbar.php"; ?>
 
@@ -88,11 +104,11 @@ function generateRandomString($length = 10) {
                 <tr>
                     <th>No.</th>
                     <th>Nama</th>
-                    <th>Kategori</th>
-                    <th>Harga</th>
-                    <th>Stok</th>
-                    <th>Update</th>
-                    <th>Action</th>
+                    <th class="text-center">Kategori</th>
+                    <th class="text-center">Harga</th>
+                    <th class="text-center">Stok</th>
+                    <th class="text-center">Update</th>
+                    <th class="text-center">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -105,18 +121,19 @@ function generateRandomString($length = 10) {
                     echo "<tr>
                         <td>$no</td>
                         <td>{$data['nama']}</td>
-                        <td>{$data['nama_kategori']}</td>
-                        <td>{$data['harga']}</td>
+                        <td class='text-center'>{$data['nama_kategori']}</td>
+                        <td class='text-center'>{$data['harga']}</td>
+                        
                         <td>
-                            <form method='POST' action='update-stok.php' class='d-flex'>
+                            <form method='POST' action='update-stok.php' class='d-flex justify-content-center align-items-center'>
                                 <input type='hidden' name='id' value='{$data['id']}'>
                                 <input type='number' name='stok' value='{$data['stok']}' class='form-control form-control-sm' style='width: 80px;'>
                         </td>
-                        <td>
+                        <td class='text-center'>
                                 <button type='submit' class='btn btn-sm btn-success'>Update</button>
                             </form>
                         </td>
-                        <td>
+                        <td class='text-center'>
                             <a href='produk-detail.php?p={$data['id']}' class='btn btn-info'><i class='fas fa-edit'></i></a>
                         </td>
                     </tr>";
@@ -208,8 +225,21 @@ function generateRandomString($length = 10) {
         ?>
     </div>
 </div>
+<script>
+// JavaScript untuk mempertahankan scroll position saat reload/kembali
+window.addEventListener('beforeunload', () => {
+    sessionStorage.setItem('scrollTop', window.scrollY);
+});
 
-<script src="../bootstrap/bootstrap-5.0.2-dist/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
-<script src="../fontawesome/fontawesome-free-6.7.2-web/fontawesome-free-6.7.2-web/js/all.min.js"></script>
+window.addEventListener('load', () => {
+    const scrollY = sessionStorage.getItem('scrollTop');
+    if (scrollY !== null) {
+        window.scrollTo(0, parseInt(scrollY));
+        sessionStorage.removeItem('scrollTop');
+    }
+});
+</script>
+<script src="..\bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\js\bootstrap.bundle.min.js"></script>
+<script src="..\fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\js\all.min.js"></script>
 </body>
 </html>
