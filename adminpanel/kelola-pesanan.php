@@ -74,6 +74,13 @@ if ($queryPesanan) {
 <div class="container mt-5 pb-5"> <h2 class="mb-4">Kelola Pesanan</h2>
 
     <div class="table-wrapper">
+        <?php if ($jumlahPesanan == 0): ?>
+            <div class="text-center no-orders-admin">
+                <i class="fa-solid fa-box-open fa-4x mb-4"></i>
+                <p class="fs-4 mb-2">Belum ada pesanan yang tercatat.</p>
+                <p class="text-muted">Tidak ada data pesanan saat ini.</p>
+                </div>
+        <?php else: ?>        
         <table class="table table-bordered table-hover align-middle">
             <thead class="table-dark text-center">
                 <tr>
@@ -85,14 +92,6 @@ if ($queryPesanan) {
                 </tr>
             </thead>
             <tbody>
-                <?php if ($jumlahPesanan == 0): ?>
-                    <tr>
-                        <td colspan="5" class="text-center py-4">
-                            <i class="fa-solid fa-box-open fa-2x mb-2 text-muted"></i>
-                            <p class="mb-0">Belum ada pesanan.</p>
-                            </td>
-                    </tr>
-                <?php else: ?>
                     <?php foreach($dataPesanan as $p): ?>
                         <tr class="text-center">
                             <td><?= htmlspecialchars($p['order_id']) ?></td>

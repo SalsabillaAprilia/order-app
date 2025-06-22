@@ -15,20 +15,36 @@ $fraud_status = $notif->fraud_status ?? '';
 
 $status = 'pending';
 
-if ($transaction_status == 'capture') {
-  if ($payment_type == 'credit_card') {
-    if ($fraud_status == 'challenge') {
-      $status = 'challenge';
-    } else {
-      $status = 'success';
+if ($transaction_status === 'capture') {
+    $status = ($payment_type === 'credit_card' && $fraud_status === 'challenge') ? 'challenge' : 'success';
+} elseif ($transaction_status === 'settlement') {
+    $status = 'success';
+} elseif (in_array($transaction_status, ['deny', 'cancel', 'expire'])) {
+    $status = 'failed';
+} 
+
+// Update status pembayaran di database
+mysqli_query($con, "UPDATE pesanan SET status_pembayaran = '$transaction_status' WHERE order_id = '$order_id'");
+
+// Cek dan kurangi stok jika belum pernah dikurangi
+if ($status === 'success') {
+    $q = mysqli_query($con, "SELECT * FROM pesanan WHERE order_id = '$order_id'");
+    $data = mysqli_fetch_assoc($q);
+
+    if ($data && $data['stok_dikurang'] != 1) {
+        $produk = json_decode($data['produk'], true);
+
+        foreach ($produk as $item) {
+            if (isset($item['id']) && strtolower($item['id']) !== 'ongkir') {
+                $id = $item['id'];
+                $qty = $item['quantity'];
+                mysqli_query($con, "UPDATE produk SET stok = stok - $qty WHERE id = '$id'");
+            }
+        }
+
+        mysqli_query($con, "UPDATE pesanan SET stok_dikurang = 1 WHERE order_id = '$order_id'");
     }
-  }
-} else if ($transaction_status == 'settlement') {
-  $status = 'success';
-} else if ($transaction_status == 'pending') {
-  $status = 'pending';
-} else if ($transaction_status == 'deny' || $transaction_status == 'cancel' || $transaction_status == 'expire') {
-  $status = 'failed';
 }
 
-mysqli_query($con, "UPDATE pesanan SET status = '$status' WHERE order_id = '$order_id'");
+// (opsional) catat log
+file_put_contents("log-notif.txt", date('Y-m-d H:i:s') . ' - ' . $json . PHP_EOL, FILE_APPEND);
