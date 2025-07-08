@@ -23,6 +23,54 @@
     } else {
         $salam = "Selamat Malam";
     }
+
+    // --- LOGIKA BARU UNTUK LAPORAN STATISTIK ---
+    // Default filter: 30 hari terakhir
+    $endDate = date('Y-m-d');
+    $startDate = date('Y-m-d', strtotime('-30 days'));
+
+    // Ambil dari request jika ada filter
+    if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
+        $inputStartDate = $_GET['start_date'];
+        $inputEndDate = $_GET['end_date'];
+
+        // Validasi format tanggal sederhana
+        if (preg_match("/^\d{4}-\d{2}-\d{2}$/", $inputStartDate) && preg_match("/^\d{4}-\d{2}-\d{2}$/", $inputEndDate)) {
+            $startDate = $inputStartDate;
+            $endDate = $inputEndDate;
+        }
+    }
+
+    // Query untuk mengambil data pesanan per hari dalam rentang tanggal
+    // Hanya hitung pesanan yang status pembayarannya 'settlement' (berhasil)
+    $queryLaporan = mysqli_query($con, "
+        SELECT 
+            DATE(tanggal) AS tgl, 
+            COUNT(id) AS total_pesanan, 
+            SUM(total_harga) AS total_pendapatan
+        FROM pesanan
+        WHERE status_pembayaran = 'settlement' AND DATE(tanggal) BETWEEN '$startDate' AND '$endDate'
+        GROUP BY DATE(tanggal)
+        ORDER BY DATE(tanggal) ASC
+    ");
+
+    $labels = []; // Untuk tanggal di Chart.js
+    $dataPesananChart = []; // Untuk jumlah pesanan di Chart.js
+    $dataPendapatanChart = []; // Untuk total pendapatan di Chart.js
+
+    if ($queryLaporan) {
+        while ($data = mysqli_fetch_assoc($queryLaporan)) {
+            $labels[] = date('d M', strtotime($data['tgl'])); // Format tanggal untuk label
+            $dataPesananChart[] = $data['total_pesanan'];
+            $dataPendapatanChart[] = $data['total_pendapatan'];
+        }
+    }
+
+    // Ubah data PHP menjadi format JSON agar bisa dibaca oleh JavaScript
+    $labelsJson = json_encode($labels);
+    $dataPesananChartJson = json_encode($dataPesananChart);
+    $dataPendapatanChartJson = json_encode($dataPendapatanChart);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +106,34 @@
     .no-decoration {
         text-decoration: none;
     }
+
+    /* Style untuk Laporan Statistik */
+    .statistics-card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.08);
+        margin-top: 30px;
+    }
+    .filter-section {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+        flex-wrap: wrap; /* Untuk responsif */
+    }
+    .filter-section label {
+        white-space: nowrap;
+    }
+    .filter-section .form-control {
+        flex: 1; /* Agar input mengisi ruang */
+        min-width: 150px; /* Lebar minimum agar tidak terlalu kecil */
+    }
+    .chart-container {
+        position: relative;
+        height: 400px; /* Tinggi default grafik */
+        width: 100%;
+    }
 </style>
 
 <script>
@@ -83,7 +159,7 @@
      <div class="container mt-5">
         <div class="p-4 mb-4 bg-light rounded-3 shadow-sm"> <div class="container-fluid py-2">
                 <h3 class="display-7 fw-bold"><?php echo $salam; ?>, Admin!</h3>
-                <p class="col-md-8 fs-5">Selamat datang kembali di dashboard Warung Nasi Bunda.<br> Mari kita kelola toko bersama hari ini 🚀</p>
+                <p class="col-md-8 fs-5">Selamat datang kembali di dashboard Warung Nasi Bunda.<br> Mari kita kelola toko bersama hari ini &#128640;</p>
                 <p class="lead mb-0 text-muted">Tanggal: <?php echo date('d M Y'); ?> | Waktu: <?php echo date('H:i'); ?> WIB</p>
             </div>
         </div>
@@ -131,9 +207,144 @@
                 </div>
             </div>
         </div>
+
+        <div class="statistics-card mt-5">
+            <h4 class="mb-4">Laporan Statistik Pesanan Berhasil (Settlement)</h4>
+
+            <form method="GET" action="" class="filter-section">
+                <label for="start_date">Dari Tanggal:</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" value="<?= htmlspecialchars($startDate) ?>">
+                
+                <label for="end_date">Sampai Tanggal:</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" value="<?= htmlspecialchars($endDate) ?>">
+                
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-filter me-1"></i> Filter</button>
+                <button type="button" class="btn btn-secondary" onclick="resetFilter()"><i class="fa-solid fa-arrows-rotate me-1"></i> Reset</button>
+            </form>
+
+            <div class="chart-container">
+                <canvas id="orderChart"></canvas>
+            </div>
+            <hr>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h5>Total Pesanan Berhasil:</h5>
+                    <p class="fs-4 fw-bold text-success"><?= array_sum($dataPesananChart); ?></p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Total Pendapatan (Settlement):</h5>
+                    <p class="fs-4 fw-bold text-primary">Rp<?= number_format(array_sum($dataPendapatanChart), 0, ',', '.'); ?></p>
+                </div>
+            </div>
+        </div>
+
     </div>
   
     <script src="..\bootstrap\bootstrap-5.0.2-dist\bootstrap-5.0.2-dist\js\bootstrap.bundle.min.js"></script>
     <script src="..\fontawesome\fontawesome-free-6.7.2-web\fontawesome-free-6.7.2-web\js\all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Data dari PHP
+        const chartLabels = <?= $labelsJson ?>;
+        const chartDataPesanan = <?= $dataPesananChartJson ?>;
+        const chartDataPendapatan = <?= $dataPendapatanChartJson ?>;
+
+        const ctx = document.getElementById('orderChart').getContext('2d');
+        const orderChart = new Chart(ctx, {
+            type: 'bar', // Anda bisa coba 'line' juga
+            data: {
+                labels: chartLabels,
+                datasets: [
+                    {
+                        label: 'Jumlah Pesanan',
+                        data: chartDataPesanan,
+                        backgroundColor: 'rgba(10, 107, 74, 0.7)', // Warna hijau dari summary-kategori
+                        borderColor: 'rgba(10, 107, 74, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Total Pendapatan (Rp)',
+                        data: chartDataPendapatan,
+                        backgroundColor: 'rgba(0, 123, 255, 0.7)', // Warna biru Bootstrap
+                        borderColor: 'rgba(0, 123, 255, 1)',
+                        borderWidth: 1,
+                        type: 'line', // Pendapatan bisa lebih baik ditampilkan sebagai garis
+                        fill: false,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Tanggal'
+                        }
+                    },
+                    y: { // Y-axis untuk Jumlah Pesanan
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Jumlah Pesanan'
+                        }
+                    },
+                    y1: { // Y-axis kedua untuk Total Pendapatan
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        beginAtZero: true,
+                        grid: {
+                            drawOnChartArea: false, // Hanya tampilkan grid untuk y-axis pertama
+                        },
+                        title: {
+                            display: true,
+                            text: 'Total Pendapatan (Rp)'
+                        },
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return 'Rp' + value.toLocaleString('id-ID'); // Format angka rupiah
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.dataset.label === 'Total Pendapatan (Rp)') {
+                                    label += 'Rp' + context.raw.toLocaleString('id-ID');
+                                } else {
+                                    label += context.raw;
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Fungsi untuk reset filter
+        function resetFilter() {
+            window.location.href = window.location.pathname; // Kembali ke URL tanpa parameter GET
+        }
+    </script>
 </body>
 </html>
