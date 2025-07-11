@@ -5,7 +5,7 @@ require_once 'vendor/autoload.php';
 
 file_put_contents('debug_notif.txt', "SETELAH LOAD KONEKSI\n", FILE_APPEND);
 
-\Midtrans\Config::$serverKey = 'SB-Mid-server-eFkUEIBGj-d_5rthSD-3WP_T';
+\Midtrans\Config::$serverKey = 'Sbxxxx';
 \Midtrans\Config::$isProduction = false;
 
 // Logging awal
