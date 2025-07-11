@@ -3,7 +3,7 @@ session_start();
 require 'koneksi.php';
 require_once 'vendor/autoload.php';
 
-\Midtrans\Config::$serverKey = 'SB-Mid-server-eFkUEIBGj-d_5rthSD-3WP_T'; // Ganti dengan punyamu
+\Midtrans\Config::$serverKey = 'SBxxx'; // Ganti dengan punyamu
 \Midtrans\Config::$isProduction = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
